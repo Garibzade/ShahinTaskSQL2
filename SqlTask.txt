@@ -1,0 +1,119 @@
+
+
+
+CREATE TABLE ROLES
+(
+ID INT IDENTITY PRIMARY KEY,
+NAME NVARCHAR(15) NOT NULL
+)
+
+
+
+CREATE TABLE USERS
+(
+ID INT IDENTITY PRIMARY KEY,
+Name NVARCHAR(15) NOT NULL,
+Pasword NVARCHAR(20) NOT NULL,
+RoleId INT FOREIGN KEY REFERENCES Roles(Id)
+)
+
+
+
+INSERT INTO ROLES 
+VALUES('Admin'),('Moderator'),('User')
+
+
+
+INSERT INTO USERS 
+VALUES ('ADMINAME','ADMINPASSSWORD',1),('MODERATORNAME','MODERATORPASSWORD',2),('USERNAME','USERPASSWORD',3)
+
+
+
+
+SELECT * FROM Users as u
+INNER JOIN Roles as r 
+ON u.RoleId=r.Id
+
+
+
+
+
+CREATE TABLE CATEGORIES 
+(
+ Id INT PRIMARY KEY,
+ Name VARCHAR(25)
+)
+
+CREATE TABLE Sizes
+(
+Id INT PRIMARY KEY,
+Name VARCHAR(10)
+)
+
+
+
+
+CREATE TABLE PRODUCTS
+(
+Id int  PRIMARY KEY,
+NAME NVARCHAR(26) Not Null,
+PRICE Decimal (7,2),
+COST Decimal(7,2),
+CATEGORYID Int REFERENCES Categories(Id)
+)
+
+
+
+
+CREATE TABLE PRODUCTSIZES 
+(
+ProductId INT,
+SizeId INT,
+FOREIGN KEY (ProductId) REFERENCES Products(Id),
+FOREIGN KEY (SizeId) REFERENCES Sizes(Id),
+PRIMARY KEY (ProductId, SizeId)
+)
+
+--NOT NULL OLA BILMESI UCUN
+
+
+
+
+
+INSERT INTO CATEGORIES 
+VALUES
+(1, 'Telefon'),
+(2, 'Notebook'),
+(3, 'Planset ')
+
+
+
+INSERT INTO SIZES  
+VALUES
+(1, 'Kıcık'),
+(2, 'Orta'),
+(3, 'Boyuk')
+
+
+
+
+INSERT INTO PRODUCTS 
+VALUES
+(1, 'Iphone', 1000, 75, 1),
+(2, 'Asus', 2100, 64, 2),
+(3, 'Ipad', 900, 93,3)
+
+
+
+
+
+INSERT INTO PRODUCTSIZES  (ProductId, SizeId) VALUES
+(1, 1), (1, 2), (1, 3), 
+(2, 1), (2, 2), (2, 3), 
+(3, 2)
+
+SELECT p.Name AS ProductName, c.Name AS CategoryName, s.Name AS SizeName
+FROM Products p
+INNER JOIN Categories as c ON p.CategoryId = c.Id
+INNER JOIN ProductSizes as ps ON p.Id = ps.ProductId
+INNER JOIN Sizes as s ON ps.SizeId = s.Id
